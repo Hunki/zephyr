@@ -26,6 +26,12 @@
 //#define SLEEP_TIME 	1000
 #define SLEEP_TIME 	200
 
+/* size of stack area used by each thread */
+#define STACKSIZE 1024
+
+/* scheduling priority used by each thread */
+#define PRIORITY 7
+
 static int shell_cmd_ping(int argc, char *argv[])
 {
 	ARG_UNUSED(argc);
@@ -71,10 +77,13 @@ static struct shell_cmd commands[] = {
 
 void main(void)
 {
+	SHELL_REGISTER(MY_SHELL_MODULE, commands);
+}
+
+void blink(void)
+{
 	int cnt = 0;
 	struct device *dev;
-
-	SHELL_REGISTER(MY_SHELL_MODULE, commands);
 
 	dev = device_get_binding(LED_PORT);
 	/* Set LED pin as output */
@@ -87,3 +96,21 @@ void main(void)
 		k_sleep(SLEEP_TIME);
 	}
 }
+
+K_THREAD_DEFINE(blink_id, STACKSIZE, blink, NULL, NULL, NULL,
+		PRIORITY, 0, K_NO_WAIT);
+
+#if 0
+void test(void)
+{
+	int cnt = 0;
+
+	while (1) {
+		printk("cnt %d\n", cnt++);
+		k_sleep(SLEEP_TIME);
+	}
+}
+
+K_THREAD_DEFINE(test_id, STACKSIZE, test, NULL, NULL, NULL,
+		PRIORITY, 0, K_NO_WAIT);
+#endif

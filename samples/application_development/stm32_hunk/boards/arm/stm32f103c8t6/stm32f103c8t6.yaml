@@ -1,0 +1,8 @@
+identifier: stm32f103c8t6
+name: STM32F103C8T6
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gccarmemb
+ram: 20

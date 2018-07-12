@@ -1,0 +1,12 @@
+sample:
+  description: Sample that uses an out-of-tree board
+  name: Out-of-tree board
+tests:
+  boards.out_of_tree:
+    tags: out_of_tree
+    platform_whitelist: stm32f103c8t6
+    harness: console
+    harness_config:
+      type: one_line
+      regex:
+        - "Hello World! (.*)"
